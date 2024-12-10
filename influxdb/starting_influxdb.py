@@ -2,7 +2,7 @@ from influxdb_client import InfluxDBClient, BucketsApi
 
 # Configurações do InfluxDB
 url = "http://localhost:8086"
-token = "xRwza4Xs9UdbD3ngutYM9mo7g8EFiMn-JAhtb0XLvPxBKlsREfRvwWJqxmOBfdxHOvqHLP_3LccMYG-FqBueog=="
+token = "tag"
 org = "my-org"  # Nome da organização
 
 def create_bucket(bucket_name):

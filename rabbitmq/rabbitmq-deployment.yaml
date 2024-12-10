@@ -31,7 +31,7 @@ spec:
         - name: script-volume
           mountPath: /scripts/setup_rabbitmq.sh
           subPath: setup_rabbitmq.sh
-        command: ["sh", "-c", "/scripts/setup_rabbitmq.sh"]
+        command: ["sh", "-c", "chmod +x /scripts/setup_rabbitmq.sh && /scripts/setup_rabbitmq.sh"]
       volumes:
       - name: script-volume
         configMap:

@@ -15,6 +15,8 @@ spec:
       containers:
       - name: rabbitmq
         image: rabbitmq:3.10.5-management
+        securityContext:
+            runAsUser: 0
         ports:
         - containerPort: 5672
           name: messaging
@@ -36,6 +38,7 @@ spec:
       - name: script-volume
         configMap:
           name: rabbitmq-setup-script
+          defaultMode: 0777
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -58,13 +61,7 @@ data:
 
     # Aguarda o RabbitMQ inicializar
     echo "Aguardando RabbitMQ inicializar..."
-    for i in {1..10}; do
-        if curl -u rabbitmq:rabbitmq http://localhost:15672/api/overview &>/dev/null; then
-            echo "RabbitMQ está pronto."
-            break
-        fi
-        sleep 2
-    done
+    sleep 40
 
     # Criando o exchange
     echo "Criando exchange 'fm.fanout'..."
@@ -90,3 +87,20 @@ data:
 
     #Mantem o container em execução
     tail -f /dev/null
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: messaging
+      port: 5672
+      targetPort: 5672
+    - name: management
+      port: 15672
+      targetPort: 15672
+  type: NodePort

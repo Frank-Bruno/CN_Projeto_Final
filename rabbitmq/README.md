@@ -1,4 +1,15 @@
-# Instalação Automática do RabbitMQ 
+# Instalação com Kubernets
+Instala o pod do Rabbitmq
+```sh
+kubectl apply -f rabbitm-deployment  
+```
+Para acessar o Rabbitmq localmente faça um port-forward:
+```sh
+kubectl port-forward deployment/rabbitmq 15672:15672 
+```
+
+# Instalação com Docker
+## Instalação Automática do RabbitMQ 
 
 ```sh
 docker build -t my_rabbitmq_with_setup .
@@ -9,7 +20,7 @@ docker run -d --name rabbitmq -p 8080:15672 -p 5672:5672 -p 25676:25676 -e RABBI
 ```
 
 
-# Instalação do RabbitMQ Manualmente
+## Instalação do RabbitMQ Manualmente
 
 
 ```sh

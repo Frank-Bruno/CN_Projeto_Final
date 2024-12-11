@@ -33,7 +33,7 @@ spec:
         - name: script-volume
           mountPath: /scripts/setup_rabbitmq.sh
           subPath: setup_rabbitmq.sh
-        command: ["sh", "-c", "chmod +x /scripts/setup_rabbitmq.sh && /scripts/setup_rabbitmq.sh"]
+        command: ["sh", "-c", "/scripts/setup_rabbitmq.sh"]
       volumes:
       - name: script-volume
         configMap:
@@ -61,7 +61,13 @@ data:
 
     # Aguarda o RabbitMQ inicializar
     echo "Aguardando RabbitMQ inicializar..."
-    sleep 40
+    while true; do
+      if grep -q "Server startup complete;" /var/log/rabbitmq/rabbit@$(hostname).log; then
+        echo "RabbitMQ está pronto."
+        break
+      fi
+      sleep 2
+    done
 
     # Criando o exchange
     echo "Criando exchange 'fm.fanout'..."

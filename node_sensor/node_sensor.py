@@ -6,11 +6,11 @@ from influxdb_client import InfluxDBClient, BucketsApi
 from influxdb_client.client.exceptions import InfluxDBError
 
 # Configurações do Broker AMQP
-BROKER_URL = "amqp://rabbitmq:rabbitmq@localhost:5672/"
+BROKER_URL = "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672/"
 EXCHANGE_NAME = "fm.fanout"
 
 # Configurações do InfluxDB
-INFLUXDB_URL = "http://localhost:8086"
+INFLUXDB_URL = "http://influxdb-service:8086"
 INFLUXDB_TOKEN = "NwM3ta7vunbyUzySwxSgNMCRhGRYoHzGNY0yPap2nKvtYGNaMcarfp5_bvtKM85vTpXcXDffcGbputShx0v6ng==" #"your-token-here"
 INFLUXDB_ORG = "my-org"
 BUCKET_NAME = "sensor_data"

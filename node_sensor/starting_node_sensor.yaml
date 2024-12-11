@@ -29,7 +29,7 @@ spec:
         - name: BUCKET_NAME
           value: "sensor_data"
         - name: BROKER_URL
-          value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:15672"
+          value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672"
         - name: EXCHANGE_NAME
           value: "fm.fanout"
   restartPolicy: Always

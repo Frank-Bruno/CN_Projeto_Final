@@ -10,5 +10,9 @@ COPY node_sensor.py /app/
 # Instalar as dependências do Python
 RUN pip install --no-cache-dir pika influxdb-client
 
+# Expôr a porta que o aplicativo usará (se necessário)
+EXPOSE 8086
+EXPOSE 15672
+EXPOSE 5672
 # Comando para rodar o script
 CMD ["python", "/app/node_sensor.py"]

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-sensor-pod
+  labels:
+    app: node-sensor
+spec:
+  containers:
+    - name: node-sensor
+      image: mercydiniz/no-sensor:latest  # Imagem do Docker Hub
+      env:
+        - name: MAX_NODES
+          value: "10"
+        - name: INITIAL_NODES
+          value: "2"
+        - name: INFLUXDB_URL
+          value: "http://influxdb-service:8086"
+        - name: INFLUXDB_TOKEN
+          value: "<seu-token>"
+        - name: INFLUXDB_ORG
+          value: "my-org"
+        - name: BUCKET_NAME
+          value: "sensor_data"
+        - name: BROKER_URL
+          value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672"
+        - name: EXCHANGE_NAME
+          value: "fm.fanout"
+  restartPolicy: Always

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-sensor-deployment
+  labels:
+    app: node-sensor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-sensor
+  template:
+    metadata:
+      labels:
+        app: node-sensor
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - node-sensor
+                      - influxdb
+                      - rabbitmq
+                      - app1
+                      - app2
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: node-sensor
+          image: mercydiniz/no-sensor:latest
+          env:
+            - name: MAX_NODES
+              value: "10"
+            - name: INITIAL_NODES
+              value: "2"
+            - name: INFLUXDB_URL
+              value: "http://influxdb-service:8086"
+            - name: BROKER_URL
+              value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"

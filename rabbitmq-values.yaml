@@ -1,0 +1,21 @@
+auth:
+  username: admin
+  password: admin
+  erlangCookie: secretcookie
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - rabbitmq
+        topologyKey: "kubernetes.io/hostname"
+
+service:
+  type: NodePort
+  nodePorts:
+    manager: 30001   # Painel de gerenciamento RabbitMQ (15672)
+    amqp: 30003      # Porta AMQP (5672)

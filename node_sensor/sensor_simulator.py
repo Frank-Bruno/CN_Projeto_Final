@@ -44,7 +44,7 @@ def ensure_tag_exists(node_id):
 def publish_data_to_broker(channel, node_id, sensor_data):
     message = {"node_id": node_id, "data": sensor_data, "timestamp": time.time()}
     message_body = json.dumps(message).encode('utf-8')
-    channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=str(message_body))
+    channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=message_body)
     print(f"Mensagem enviada: {message}")
 
 

@@ -30,7 +30,6 @@ helm version
 ~~~
 
 ### Criando o Cluster Kubernetes com Kind
-
 Use o arquivo de configuração *cluster-config.yaml* para configurar um cluster com 1 control plane e 5 nós workers. Execute o comando:
 
 ~~~bash
@@ -41,6 +40,7 @@ Verifique se o cluster foi criado corretamente:
 ~~~bash
 kind get clusters
 ~~~
+
 Após a criação do cluster, verifique os nós:
 ~~~bash
 kubectl get nodes
@@ -55,12 +55,15 @@ Adicione o repositório do RabbitMQ ao Helm:
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ~~~ 
+
 Use o Helm para instalar o RabbitMQ no cluster:
 ~~~bash
 helm install rabbitmq bitnami/rabbitmq -f rabbitmq-values.yaml
 ~~~
+
 Entre as informações de saida será indicado como expor o serviço:
 ![Saida esperada](/imgs/acesso_rabbitmq_1.png)
+
 Caso precise recuperar a senha use:
 ~~~bash
 echo "Password      : $(kubectl get secret --namespace default rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 -d)"
@@ -70,6 +73,7 @@ Verifique o serviço:
 kubectl get all | grep rabbitmq
 ~~~
 ![Saida esperada](/imgs/verificando_servico_rabbitmq.png)
+
 O RabbitMQ foi exposto usando o tipo NodePort e para acessar o painel de gerenciamento você precisa identificar o IP do nós (workers) do seu cluster:
 ~~~bash
 kubectl get pod -o wide
@@ -91,6 +95,7 @@ Use o Helm para instalar o Influxdb no cluster:
 ~~~bash
 helm install influxdb influxdata/influxdb2 -f influxdb-values.yaml
 ~~~
+
 Entre as informações de saida será indicado como expor o serviço:
 ![Saida esperada](/imgs/acesso_influxdb_1.png)
 
@@ -109,6 +114,11 @@ kubectl exec -it <nome-do-pod-influxdb> -- influx auth list
 Use o arquivo *simulator-deployment.yaml* para configurar o pod para simular o trafego gerado por uma rede de sensores. Execute o comando:
 ~~~bash
 kubectl apply -f simulator-deployment.yaml
+~~~
+
+Se você deseja ver os logs do pod, basta executar o seguinte comando:
+~~~bash
+kubectl logs <nome-do-pod>
 ~~~
 
 Caso precise fazer alguma alteração na simulação, acessar o scripts *sensor_simulator.py* e edite. Depois execute os seguintes comandos para construir uma nova imagem:
@@ -138,8 +148,6 @@ Serviços e as portas configuradas
 kubectl get services
 ~~~
 ![Saida esperada](/imgs/verificando_servicos_p1.png)
-
-
 
 ### Configurar o Horizontal Pod Autoscaler (HPA)
 

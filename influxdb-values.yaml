@@ -1,18 +1,34 @@
+# Configuração de afinidade para espalhar os pods em diferentes nós
 affinity:
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
-            - key: app
+            - key: app.kubernetes.io/name
               operator: In
               values:
-                - influxdb
+                - influxdb2
         topologyKey: "kubernetes.io/hostname"
 
+# Configuração do serviço para expor o InfluxDB 2.x
 service:
   type: NodePort
-  nodePort: 30002   # Porta externa para acesso ao InfluxDB
+  nodePort: 30002
   ports:
     - name: http
-      port: 8086       # Porta interna do InfluxDB
+      port: 8086
       targetPort: 8086
+
+# Configuração do admin user e token
+adminUser:
+  organization: "my-org"     # Nome da organização
+  bucket: "my-bucket"        # Nome do bucket padrão
+  username: "admin"          # Nome do usuário administrador
+  password: "admin123"       # Senha do usuário administrador
+  token: "my-super-secret-token"  # Token personalizado
+
+# Configuração para persistência
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "standard"   # Use a classe de armazenamento disponível no cluster

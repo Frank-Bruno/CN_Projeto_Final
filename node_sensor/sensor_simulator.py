@@ -9,7 +9,7 @@ from influxdb_client.client.exceptions import InfluxDBError
 BROKER_URL = os.getenv("BROKER_URL", "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672/")
 EXCHANGE_NAME = os.getenv("EXCHANGE_NAME", "fm.fanout")
 INFLUXDB_URL = os.getenv("INFLUXDB_URL", "http://influxdb-service:8086")
-INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN", "your-token")
+INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN", "my-super-secret-token")
 INFLUXDB_ORG = os.getenv("INFLUXDB_ORG", "my-org")
 BUCKET_NAME = os.getenv("BUCKET_NAME", "sensor_data")
 INITIAL_NODES = int(os.getenv("INITIAL_NODES", 2))

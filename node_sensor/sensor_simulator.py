@@ -4,6 +4,7 @@ import random
 import pika
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.exceptions import InfluxDBError
+import json
 
 # Configurações dinâmicas (lidas do ambiente)
 BROKER_URL = os.getenv("BROKER_URL", "amqp://admin:admin@rabbitmq:5672/")
@@ -42,7 +43,8 @@ def ensure_tag_exists(node_id):
 
 def publish_data_to_broker(channel, node_id, sensor_data):
     message = {"node_id": node_id, "data": sensor_data, "timestamp": time.time()}
-    channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=str(message))
+    message_body = json.dumps(message).encode('utf-8')
+    channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=str(message_body))
     print(f"Mensagem enviada: {message}")
 
 

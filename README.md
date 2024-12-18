@@ -45,7 +45,7 @@ Após a criação do cluster, verifique os nós:
 ~~~bash
 kubectl get nodes
 ~~~
-![Saida esperada](/imgs/verificando_criacao_clusteres.png)
+![Saida esperada](/imgs/verificando_criacao_cluster_nodes.png)
 
 Para garantir que os pods (simulador, aplicação 1, aplicação 2, RabbitMQ e InfluxDB) sejam distribuídos em nós distintos, você pode usar Pod Anti-Affinity no arquivo YAML de cada deployment/statefulset.
 

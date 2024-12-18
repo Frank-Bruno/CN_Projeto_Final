@@ -1,0 +1,42 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+  labels:
+    app: consumer-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-app
+  template:
+    metadata:
+      labels:
+        app: consumer-app
+    spec:
+      containers:
+      - name: consumer-container
+        image: frankb227/consumer:1.2
+        command: ["python3", "/scripts/receive-c.py"]
+      nodeSelector: 
+        kubernetes.io/hostname: iot-cluster-worker2
+
+---
+
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-service
+  labels:
+    app: consumer-app
+spec:
+  selector:
+    app: consumer-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+

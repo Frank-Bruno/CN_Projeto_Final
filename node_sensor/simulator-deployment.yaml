@@ -30,14 +30,14 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: node-sensor
-          image: mercydiniz/no-sensor:latest
+          image: mercydiniz/traffic_simulator_sensor_network:latest
           env:
             - name: MAX_NODES
               value: "10"
             - name: INITIAL_NODES
               value: "2"
             - name: INFLUXDB_URL
-              value: "http://influxdb-service:8086"
+              value: "http://influxdb-influxdb2:80"
             - name: BROKER_URL
               value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672"
           resources:

@@ -123,9 +123,9 @@ kubectl logs <nome-do-pod>
 
 Caso precise fazer alguma alteração na simulação, acessar o scripts *sensor_simulator.py* e edite. Depois execute os seguintes comandos para construir uma nova imagem:
 ~~~bash
-docker build -t mercydiniz/node-sensor:latest .
+docker build -t mercydiniz/traffic_simulator_sensor_network:latest .
 docker login
-docker push mercydiniz/node-sensor:latest
+docker push mercydiniz/traffic_simulator_sensor_network:latest
 ~~~
 
 ### Configurar as Aplicações

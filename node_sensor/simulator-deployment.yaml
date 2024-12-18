@@ -39,7 +39,7 @@ spec:
             - name: INFLUXDB_URL
               value: "http://influxdb-influxdb2:80"
             - name: BROKER_URL
-              value: "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672"
+              value: "amqp://admin:admin@rabbitmq:5672"
           resources:
             requests:
               cpu: "500m"

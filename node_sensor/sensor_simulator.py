@@ -6,7 +6,7 @@ from influxdb_client import InfluxDBClient
 from influxdb_client.client.exceptions import InfluxDBError
 
 # Configurações dinâmicas (lidas do ambiente)
-BROKER_URL = os.getenv("BROKER_URL", "amqp://rabbitmq:rabbitmq@rabbitmq-service:5672/")
+BROKER_URL = os.getenv("BROKER_URL", "amqp://admin:admin@rabbitmq:5672/")
 EXCHANGE_NAME = os.getenv("EXCHANGE_NAME", "fm.fanout")
 INFLUXDB_URL = os.getenv("INFLUXDB_URL", "http://influxdb-influxdb2:80")
 INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN", "my-super-secret-token")

@@ -120,6 +120,7 @@ Se você deseja ver os logs do pod, basta executar o seguinte comando:
 ~~~bash
 kubectl logs <nome-do-pod>
 ~~~
+![Saida esperada](/imgs/logs_simulador_trafego_p1.png)
 
 Caso precise fazer alguma alteração na simulação, acessar o scripts *sensor_simulator.py* e edite. Depois execute os seguintes comandos para construir uma nova imagem:
 ~~~bash

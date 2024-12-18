@@ -70,7 +70,16 @@ Verifique o serviço:
 kubectl get all | grep rabbitmq
 ~~~
 ![Saida esperada](/imgs/verificando_servico_rabbitmq.png)
-O RabbitMQ será exposto internamente via ClusterIP.
+O RabbitMQ foi exposto usando o tipo NodePort e para acessar o painel de gerenciamento você precisa identificar o IP do nós (workers) do seu cluster:
+~~~bash
+kubectl get pod -o wide
+kubectl get nodes -o wide
+~~~
+
+Se você não conseguir acessar o IP do nó diretamente, você pode fazer o encaminhamento da porta do serviço diretamente para a sua máquina local, assim:
+~~~bash
+kubectl port-forward svc/rabbitmq 15672:15672
+~~~
 
 ### Configurando o InfluxDB com Helm
 Adicione o repositório do Influxdb ao Helm:

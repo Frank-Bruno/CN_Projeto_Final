@@ -37,6 +37,10 @@ Use o arquivo de configuração *cluster-config.yaml* para configurar um cluster
 kind create cluster --name iot-cluster --config cluster-config.yaml
 ~~~
 
+Verifique se o cluster foi criado corretamente:
+~~~bash
+kind get clusters
+~~~
 Após a criação do cluster, verifique os nós:
 ~~~bash
 kubectl get nodes
@@ -76,7 +80,7 @@ helm repo update
 ~~~ 
 Use o Helm para instalar o Influxdb no cluster:
 ~~~bash
-helm install influxdb influxdata/influxdb -f influxdb-values.yaml
+helm install influxdb influxdata/influxdb2 -f influxdb-values.yaml
 ~~~
 Entre as informações de saida será indicado como expor o serviço:
 ![Saida esperada](/imgs/acesso_influxdb_1.png)
@@ -87,7 +91,10 @@ kubectl get all | grep influxdb
 ~~~
 ![Saida esperada](/imgs/verificando_servico_influxdb.png)
 
-Caso queira 
+Caso precise recuperar o toke, conecte-se ao contêiner do InfluxDB assim:
+~~~bash
+kubectl exec -it <nome-do-pod-influxdb> -- influx auth list
+~~~
 
 ### Configurar o Simulador de Tráfego
 Use o arquivo *simulator-deployment.yaml* para configurar o pod para simular o trafego gerado por uma rede de sensores. Execute o comando:
@@ -112,11 +119,18 @@ kubectl get pods -o wide
 ~~~
 ![Saida esperada](/imgs/verificando_distribuicao_pods_p1.png)
 
+Os StatefulSet que gerenciam os pod:
+~~~bash
+kubectl get statefulsets
+~~~
+
 Serviços e as portas configuradas
 ~~~bash
 kubectl get services
 ~~~
 ![Saida esperada](/imgs/verificando_servicos_p1.png)
+
+
 
 ### Configurar o Horizontal Pod Autoscaler (HPA)
 

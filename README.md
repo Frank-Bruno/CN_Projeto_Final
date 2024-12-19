@@ -85,6 +85,12 @@ Se você não conseguir acessar o IP do nó diretamente, você pode fazer o enca
 kubectl port-forward svc/rabbitmq 15672:15672
 ~~~
 
+Verifique se as filas e exchanges estão configuradas corretamente.
+~~~bash
+kubectl exec -it <rabbitmq-pod-name> -- rabbitmqctl list_exchanges
+kubectl exec -it <rabbitmq-pod-name> -- rabbitmqctl list_queues
+~~~
+
 ### Configurando o InfluxDB com Helm
 Adicione o repositório do Influxdb ao Helm:
 ~~~bash

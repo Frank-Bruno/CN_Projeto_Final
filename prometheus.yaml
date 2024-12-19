@@ -1,0 +1,44 @@
+server:
+  service:
+    type: ClusterIP
+    port: 9090
+
+  # Configuração de ServiceMonitors
+  serviceMonitorSelector:
+    matchLabels:
+      release: prometheus
+
+  # Recursos para o servidor Prometheus
+  resources:
+    requests:
+      memory: 400Mi
+      cpu: 200m
+
+serviceMonitor:
+  enabled: true
+
+# Configurações do Node Exporter
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
+
+# Configurações dos ServiceMonitors para aplicações
+additionalServiceMonitors:
+  - name: app1-monitor
+    namespace: default
+    endpoints:
+      - port: metrics
+        interval: 15s
+    selector:
+      matchLabels:
+        app: consumer-app
+  - name: app2-monitor
+    namespace: default
+    endpoints:
+      - port: metrics
+        interval: 15s
+    selector:
+      matchLabels:
+        app: app2

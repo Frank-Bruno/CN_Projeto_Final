@@ -137,8 +137,9 @@ Use o arquivo *consumer-deployment.yaml* para configurar o pod da apliação 1. 
 kubectl apply -f consumer/consumer-deployment.yaml
 ~~~
 
-## Prediction
-Pendente ...
+Use o arquivo *prediction-deployment.yaml* para configurar o pod da apliação 2. Execute o comando:
+
+(pendente .....)
 
 ### Verfique a Arquitetura
 Distribuição dos pods:
@@ -152,16 +153,64 @@ Os StatefulSet que gerenciam os pod:
 kubectl get statefulsets
 ~~~
 
-Serviços e as portas configuradas
+Serviços e as portas configuradas:
 ~~~bash
 kubectl get services
 ~~~
 ![Saida esperada](/imgs/verificando_servicos_p1.png)
 
+Histórico de releases mantido pelo Helm:
+~~~bash
+helm list --all-namespaces
+~~~
+
 ### Configurar o Horizontal Pod Autoscaler (HPA)
 Pendente ...
 ### Configurar o Prometheus e Grafana com Helm
-Pendente ...
+Adicione os repositórios ao Helm:
+~~~bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+~~~ 
+
+Crie um namespace para Prometheus e para o Grafana:
+~~~bash
+kubectl create namespace monitoring
+~~~ 
+
+Use o Helm para instalar:
+~~~bash
+helm install prometheus prometheus-community/prometheus -n monitoring -f prometheus.yaml
+
+helm install grafana grafana/grafana --namespace monitoring
+~~~ 
+
+Verifique os serviços:
+~~~bash
+kubectl get all -n monitoring
+~~~ 
+![Saida esperada](/imgs/verificar_monitoring.png)
+
+Obtenha a senha do admin do Grafana:
+~~~bash
+kubectl get secret grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 --decode
+~~~
+
+Acesse os serviços localmente:
+~~~bash
+kubectl port-forward -n monitoring svc/prometheus-server 9090:80
+kubectl port-forward -n monitoring svc/grafana 3000:80
+~~~ 
+
+#### Configurar Prometheus como Data Source no Grafana
+Acesse a interface do Grafana pelo navegador (http://localhost:3000), faça login e vai em *Data Sources* > *Add data source*. Escolha o Prometheus e configure a URL http://prometheus-server.monitoring.svc.cluster.local (o endereço do serviço do Prometheus no cluster Kubernetes). 
+
+![Saida esperada](/imgs/datasource.png)
+
+Clique em *Save & Test* e crie/importe alguma dashboard. (Pendente)
+
+![Saida esperada](/imgs/dashboad.png)
 
 ## Referências
 - [Minicurso Kubernetes - LASSE](https://www.youtube.com/playlist?list=PL6t5HAc1KOf6TS4y0AgEsMriVlcX7QMzO)

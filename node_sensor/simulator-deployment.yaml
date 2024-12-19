@@ -14,24 +14,12 @@ spec:
       labels:
         app: node-sensor
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - node-sensor
-                      - influxdb
-                      - rabbitmq
-                      - app1
-                      - app2
-              topologyKey: "kubernetes.io/hostname"
+      nodeSelector:
+        kubernetes.io/hostname: iot-cluster-worker
       containers:
         - name: node-sensor
           image: mercydiniz/traffic_simulator_sensor_network:latest
-          env:
+          env:  # Definir as variáveis de ambiente dentro do container
             - name: MAX_NODES
               value: "10"
             - name: INITIAL_NODES

@@ -140,7 +140,7 @@ docker push mercydiniz/traffic_simulator_sensor_network:latest
 Use o arquivo *consumer-deployment.yaml* para configurar o pod da apliação 1. Execute o comando:
 
 ~~~bash
-kubectl apply -f consumer/consumer-deployment.yaml
+kubectl apply -f consumer_node/consumer-deployment.yaml
 ~~~
 
 Use o arquivo *prediction-deployment.yaml* para configurar o pod da apliação 2. Execute o comando:

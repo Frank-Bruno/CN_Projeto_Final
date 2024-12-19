@@ -1,0 +1,42 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prediction-deployment
+  labels:
+    app: prediction-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prediction-app
+  template:
+    metadata:
+      labels:
+        app: prediction-app
+    spec:
+      containers:
+      - name: prediction-container
+        image: frankb227/prediction:1.6
+        command: ["python3", "/scripts/prediction.py"]
+      nodeSelector: 
+        kubernetes.io/hostname: iot-cluster-worker3
+
+---
+
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: prediction-service
+  labels:
+    app: prediction-app
+spec:
+  selector:
+    app: prediction-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+

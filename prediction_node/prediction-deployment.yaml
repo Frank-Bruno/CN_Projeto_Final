@@ -1,4 +1,3 @@
-# Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,8 +18,15 @@ spec:
       - name: prediction-container
         image: frankb227/prediction:1.6
         command: ["python3", "/scripts/prediction.py"]
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
       nodeSelector: 
-        kubernetes.io/hostname: iot-cluster-worker3
+        kubernetes.io/hostname: iot-cluster-worker5
 
 ---
 

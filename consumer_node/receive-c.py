@@ -1,19 +1,18 @@
 """
-MQTT subscriber - Listen to a topic and sends data to InfluxDB
+AMQP subscriber - Listen to a topic and sends data to InfluxDB
 """
 
 import os
 from influxdb_client import InfluxDBClient, Point
-import struct
 import json
 import pika, sys, os
 import pika.credentials
 
 # Configuração do InfluxDB
-BUCKET = "my-bucket"  # Nome do BUCKET no InfluxDB
+BUCKET = "sensor_data"  # Nome do BUCKET no InfluxDB
 ORG = "my-org"  # Nome da organização no InfluxDB
 TOKEN ="my-super-secret-token"  # Token de acesso do InfluxDB
-URL = "http://influxdb-influxdb2:8086"  # URL do servidor InfluxDB
+URL = "http://influxdb-influxdb2:80"  # URL do servidor InfluxDB
 
 client = InfluxDBClient(url=URL, token=TOKEN, org=ORG)
 write_api = client.write_api()

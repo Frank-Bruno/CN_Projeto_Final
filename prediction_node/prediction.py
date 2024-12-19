@@ -36,7 +36,7 @@ def on_message(msg):
         Point(BUCKET)
         .tag("node_id", values["node_id"])
         .tag("type", "prediction")
-        .field("predicted_temperature", prediction_value)
+        .field("predicted_flooding", prediction_value)
         .time(datetime.fromtimestamp(values["timestamp"], tz=timezone.utc).isoformat())
     )
     write_api.write(bucket=BUCKET, record=point)

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: prediction-container
-        image: frankb227/prediction:1.6
+        image: frankb227/prediction:1.7
         command: ["python3", "/scripts/prediction.py"]
         resources:
           requests:

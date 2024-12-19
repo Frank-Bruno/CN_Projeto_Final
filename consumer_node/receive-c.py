@@ -36,8 +36,8 @@ def on_message(msg):
     point = (
         Point(BUCKET)
         .tag("node_id", values["node_id"])
-        .field("humidity", values["humidity"])
-        .field("temperature", values["temperature"])
+        .field("humidity", values["data"]["humidity"])
+        .field("temperature", values["data"]["temperature"])
         .field("timestamp", values["timestamp"])
     )
     write_api.write(bucket=BUCKET, record=point)

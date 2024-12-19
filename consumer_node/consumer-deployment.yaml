@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: consumer-container
-        image: frankb227/consumer:1.2
+        image: frankb227/consumer:1.3
         command: ["python3", "/scripts/receive-c.py"]
       nodeSelector: 
         kubernetes.io/hostname: iot-cluster-worker2

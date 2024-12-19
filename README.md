@@ -130,6 +130,12 @@ docker push mercydiniz/traffic_simulator_sensor_network:latest
 ~~~
 
 ### Configurar as Aplicações
+## Data Storage
+```sh
+kubectl apply -f consumer/consumer-deployment.yaml
+```
+
+## Prediction
 Pendente ...
 
 ### Verfique a Arquitetura

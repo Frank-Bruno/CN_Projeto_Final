@@ -85,11 +85,40 @@ Se você não conseguir acessar o IP do nó diretamente, você pode fazer o enca
 kubectl port-forward svc/rabbitmq 15672:15672
 ~~~
 
-Verifique se as filas e exchanges estão configuradas corretamente.
+Verifique se as filas e a exchange estão configuradas corretamente.
 ~~~bash
 kubectl exec -it <rabbitmq-pod-name> -- rabbitmqctl list_exchanges
 kubectl exec -it <rabbitmq-pod-name> -- rabbitmqctl list_queues
 ~~~
+![Saida esperada](/imgs/exchange_queues.png)
+
+Se a as filas e a exchange não forem criadas corretamente, acesse o terminal do pod ou a interface web, e faça isso manualmente.
+~~~bash
+kubectl exec -it rabbitmq-0 -- /bin/bash
+apt-get update && apt-get install -y curl
+
+curl -u admin:admin -X PUT -H "content-type:application/json" \
+-d '{"type":"fanout","durable":true}' \
+http://localhost:15672/api/exchanges/%2F/fm.fanout
+
+curl -u admin:admin -X PUT -H "content-type:application/json" \
+-d '{"durable":true}' \
+http://localhost:15672/api/queues/%2F/c
+
+curl -u admin:admin -X PUT -H "content-type:application/json" \
+-d '{"durable":true}' \
+http://localhost:15672/api/queues/%2F/p
+
+curl -u admin:admin -X POST -H "content-type:application/json" \
+-d '{}' \
+http://localhost:15672/api/bindings/%2F/e/fm.fanout/q/c
+
+curl -u admin:admin -X POST -H "content-type:application/json" \
+-d '{}' \
+http://localhost:15672/api/bindings/%2F/e/fm.fanout/q/p
+~~~
+
+
 
 ### Configurando o InfluxDB com Helm
 Adicione o repositório do Influxdb ao Helm:

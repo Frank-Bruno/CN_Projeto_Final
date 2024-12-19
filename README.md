@@ -130,10 +130,12 @@ docker push mercydiniz/traffic_simulator_sensor_network:latest
 ~~~
 
 ### Configurar as Aplicações
-## Data Storage
-```sh
+
+Use o arquivo *consumer-deployment.yaml* para configurar o pod da apliação 1. Execute o comando:
+
+~~~bash
 kubectl apply -f consumer/consumer-deployment.yaml
-```
+~~~
 
 ## Prediction
 Pendente ...
@@ -157,9 +159,9 @@ kubectl get services
 ![Saida esperada](/imgs/verificando_servicos_p1.png)
 
 ### Configurar o Horizontal Pod Autoscaler (HPA)
-
+Pendente ...
 ### Configurar o Prometheus e Grafana com Helm
-
+Pendente ...
 
 ## Referências
 - [Minicurso Kubernetes - LASSE](https://www.youtube.com/playlist?list=PL6t5HAc1KOf6TS4y0AgEsMriVlcX7QMzO)

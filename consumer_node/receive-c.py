@@ -7,6 +7,8 @@ from influxdb_client import InfluxDBClient, Point
 import json
 import pika, sys, os
 import pika.credentials
+from datetime import datetime, timezone
+
 
 # Configuração do InfluxDB
 BUCKET = "sensor_data"  # Nome do BUCKET no InfluxDB
@@ -35,9 +37,10 @@ def on_message(msg):
     point = (
         Point(BUCKET)
         .tag("node_id", values["node_id"])
+        .tag("type", "measurement")
         .field("humidity", values["data"]["humidity"])
         .field("temperature", values["data"]["temperature"])
-        .field("timestamp", values["timestamp"])
+        .time(datetime.fromtimestamp(values["timestamp"], tz=timezone.utc).isoformat())
     )
     write_api.write(bucket=BUCKET, record=point)
 

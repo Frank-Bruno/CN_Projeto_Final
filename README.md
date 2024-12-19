@@ -228,6 +228,7 @@ Verifique se o HPA foi criado:
 ~~~bash
 kubectl get hpa
 ~~~ 
+![Saida esperada](/imgs/hpa.jpg)
 
 ### Configurar o Prometheus e Grafana com Helm
 Adicione os repositórios ao Helm:

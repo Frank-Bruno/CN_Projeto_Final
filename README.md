@@ -200,6 +200,26 @@ helm list --all-namespaces
 ~~~
 
 ### Configurar o Horizontal Pod Autoscaler (HPA)
+#### Pré-requisitos
+- Verifique se o HPA está habilitado no cluster Kubernetes:
+    ~~~bash
+    kubectl api-versions
+    ~~~
+    Deve listar *autoscaling/v2* ou superior
+
+- O Metrics Server deve estar em execução para fornecer métricas de CPU/memória
+    ~~~bash
+    kubectl get pods -n kube-system | grep metrics-server
+    ~~~
+    Se necessario, baixe os manifests do Metrics Server com o seguinte comando:
+    ~~~bash
+    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    ~~~
+
+- As aplicações consumidoras deve especificar limites e requisições de CPU/memória
+
+
+
 Pendente ...
 ### Configurar o Prometheus e Grafana com Helm
 Adicione os repositórios ao Helm:

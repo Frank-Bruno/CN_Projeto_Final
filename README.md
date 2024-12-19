@@ -216,11 +216,19 @@ helm list --all-namespaces
     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
     ~~~
 
-- As aplicações consumidoras deve especificar limites e requisições de CPU/memória
+- As aplicações consumidoras deve especificar limites e requisições de CPU/memória.
 
+Aplique o arquivo *consumer-hpa.yaml* e o *prediction-hpa.yaml*, com o seguinte comando:
+~~~bash
+kubectl apply -f consumer_node/consumer-hpa.yaml
+kubectl apply -f prediction_node/prediction-hpa.yaml
+~~~ 
 
+Verifique se o HPA foi criado:
+~~~bash
+kubectl get hpa
+~~~ 
 
-Pendente ...
 ### Configurar o Prometheus e Grafana com Helm
 Adicione os repositórios ao Helm:
 ~~~bash

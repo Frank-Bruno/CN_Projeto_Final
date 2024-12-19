@@ -19,6 +19,13 @@ spec:
       - name: consumer-container
         image: frankb227/consumer:1.6
         command: ["python3", "/scripts/receive-c.py"]
+        resources:
+          requests:
+            cpu: "100m"    # Quantidade mínima de CPU necessária (100 milicores)
+            memory: "128Mi" # Quantidade mínima de memória necessária
+          limits:
+            cpu: "500m"    # Limite máximo de CPU que pode ser usado
+            memory: "256Mi" # Limite máximo de memória que pode ser usado
       nodeSelector: 
         kubernetes.io/hostname: iot-cluster-worker2
 

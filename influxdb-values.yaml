@@ -19,6 +19,9 @@ service:
       port: 8086
       targetPort: 8086
 
+nodeSelector:
+  kubernetes.io/hostname: iot-cluster-worker4
+
 # Configuração do admin user e token
 adminUser:
   organization: "my-org"     # Nome da organização

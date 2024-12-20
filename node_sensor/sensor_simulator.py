@@ -68,7 +68,7 @@ def sensor_network_simulation():
                 }
                 publish_data_to_broker(channel, node_id, sensor_data)
                 node_counters[node_id] += 1
-                time.sleep(1)
+                time.sleep(0.1)
 
         if all(v >= MESSAGES_PER_NODE for v in node_counters.values()) and current_nodes < MAX_NODES:
             current_nodes += 1

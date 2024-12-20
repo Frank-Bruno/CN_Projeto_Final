@@ -5,7 +5,7 @@ metadata:
   labels:
     app: node-sensor
 spec:
-  replicas: 1
+  replicas: 10
   selector:
     matchLabels:
       app: node-sensor
@@ -21,7 +21,7 @@ spec:
           image: mercydiniz/traffic_simulator_sensor_network:latest
           env:  # Definir as variáveis de ambiente dentro do container
             - name: MAX_NODES
-              value: "10"
+              value: "100"
             - name: INITIAL_NODES
               value: "2"
             - name: INFLUXDB_URL

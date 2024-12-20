@@ -1,5 +1,3 @@
-# Um número fixo de nós sensores é criado inicialmente e todos os nós publiquem mensagens em loop simultaneamente.
-
 import os
 import time
 import random
@@ -19,7 +17,6 @@ BUCKET_NAME = os.getenv("BUCKET_NAME", "sensor_data")
 INITIAL_NODES = int(os.getenv("INITIAL_NODES", 2))
 MESSAGES_PER_NODE = int(os.getenv("MESSAGES_PER_NODE", 10))
 
-
 def ensure_bucket_exists():
     try:
         with InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG) as client:
@@ -34,38 +31,43 @@ def ensure_bucket_exists():
         print(f"Erro ao criar o bucket: {e}")
         exit(1)
 
-
 def ensure_tag_exists(node_id):
-    with InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG) as client:
-        write_api = client.write_api()
-        data = f"node_info,node_id={node_id} value=1"
-        write_api.write(bucket=BUCKET_NAME, org=INFLUXDB_ORG, record=data)
-        print(f"Tag criada no InfluxDB para o node_id: {node_id}")
-
+    try:
+        with InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG) as client:
+            write_api = client.write_api()
+            data = f"node_info,node_id={node_id} value=1"
+            write_api.write(bucket=BUCKET_NAME, org=INFLUXDB_ORG, record=data)
+            print(f"Tag criada no InfluxDB para o node_id: {node_id}")
+    except InfluxDBError as e:
+        print(f"Erro ao criar tag no InfluxDB para {node_id}: {e}")
 
 def publish_data_to_broker(channel, node_id):
-    for _ in range(MESSAGES_PER_NODE):
-        sensor_data = {
-            "humidity": random.uniform(30.0, 90.0),
-            "temperature": random.uniform(20.0, 35.0),
-        }
-        message = {"node_id": node_id, "data": sensor_data, "timestamp": time.time()}
-        message_body = json.dumps(message).encode('utf-8')
-        channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=message_body)
-        print(f"Mensagem enviada: {message}")
-        time.sleep(0.1)
-
+    try:
+        for _ in range(MESSAGES_PER_NODE):
+            sensor_data = {
+                "humidity": random.uniform(30.0, 90.0),
+                "temperature": random.uniform(20.0, 35.0),
+            }
+            message = {"node_id": node_id, "data": sensor_data, "timestamp": time.time()}
+            message_body = json.dumps(message).encode('utf-8')
+            channel.basic_publish(exchange=EXCHANGE_NAME, routing_key='', body=message_body)
+            print(f"Mensagem enviada: {message}")
+            time.sleep(0.1)
+    except Exception as e:
+        print(f"Erro ao publicar dados para {node_id}: {e}")
 
 def sensor_node_simulation(node_id):
-    connection = pika.BlockingConnection(pika.URLParameters(BROKER_URL))
-    channel = connection.channel()
-    channel.exchange_declare(exchange=EXCHANGE_NAME, exchange_type='fanout', durable=True)
+    try:
+        connection = pika.BlockingConnection(pika.URLParameters(BROKER_URL))
+        channel = connection.channel()
+        channel.exchange_declare(exchange=EXCHANGE_NAME, exchange_type='fanout', durable=True)
 
-    ensure_tag_exists(node_id)
-    publish_data_to_broker(channel, node_id)
+        ensure_tag_exists(node_id)
+        publish_data_to_broker(channel, node_id)
 
-    connection.close()
-
+        connection.close()
+    except Exception as e:
+        print(f"Erro na simulação do nó sensor {node_id}: {e}")
 
 def sensor_network_simulation():
     threads = []
@@ -79,7 +81,20 @@ def sensor_network_simulation():
     for thread in threads:
         thread.join()
 
+    print("Todos os nós sensores completaram a simulação.")
 
 if __name__ == "__main__":
     ensure_bucket_exists()
-    sensor_network_simulation()
+
+    while True:
+        try:
+            print("Iniciando simulação da rede de sensores...")
+            sensor_network_simulation()
+            print("Simulação concluída. Aguardando para reiniciar...")
+            time.sleep(60)  # Pausa antes de reiniciar a simulação (ajustável)
+        except KeyboardInterrupt:
+            print("Execução interrompida pelo usuário.")
+            break
+        except Exception as e:
+            print(f"Erro inesperado: {e}")
+            time.sleep(10)  # Tempo de recuperação em caso de erro crítico

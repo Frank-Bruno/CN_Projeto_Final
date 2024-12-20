@@ -213,7 +213,7 @@ helm list --all-namespaces
     ~~~
     Se necessario, baixe os manifests do Metrics Server com o seguinte comando:
     ~~~bash
-    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    kubectl apply -f metrics-server.yaml
     ~~~
 
 - As aplicações consumidoras deve especificar limites e requisições de CPU/memória.

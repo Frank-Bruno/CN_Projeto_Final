@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-sensor-deployment
+  labels:
+    app: node-sensor
+spec:
+  replicas: 1  # Definir o número de réplicas do simulador
+  selector:
+    matchLabels:
+      app: node-sensor
+  template:
+    metadata:
+      labels:
+        app: node-sensor
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: iot-cluster-worker
+      containers:
+        - name: node-sensor
+          image: mercydiniz/traffic_simulator_sensor_network_v2:latest
+          env:
+            - name: INITIAL_NODES
+              value: "100"  # Número fixo inicial de nós
+            - name: INFLUXDB_URL
+              value: "http://influxdb-influxdb2:80"
+            - name: BROKER_URL
+              value: "amqp://admin:admin@rabbitmq:5672"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
